@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
 
 public class Player : MonoBehaviour {
 
@@ -9,9 +10,11 @@ public class Player : MonoBehaviour {
     public float jumpSpeed = 5;
     public float deadZone = -3;
     public bool canFly = false;
+    public bool canGoDown = false;
+    public bool canTeleport = false;
 
     public static Weapon currentWeapon;
-
+    new Collider2D collider2D;
     new Rigidbody2D rigidbody;
     GM _GM;
     private Vector3 startingPosition;
@@ -53,6 +56,18 @@ public class Player : MonoBehaviour {
 
         if (Input.GetButtonDown("Jump") && (v.y == 0 || canFly) ) {
             v.y = jumpSpeed;
+
+        }
+
+        if (Input.GetButtonDown("Vertical") && (canGoDown == true))
+        {
+            Debug.Log("calling method in player");
+            GoDown();
+        }
+
+        if (canTeleport == true)
+        {
+            transform.localPosition = new Vector3(90f, 7f);
         }
 
         if (v.y != 0) {
@@ -84,6 +99,21 @@ public class Player : MonoBehaviour {
         Debug.Log("You're Out");
     }
 
+    public void GoDown()
+    {
+        Debug.Log("Going Down");
+        if (Input.GetButtonDown("Vertical"))
+        {
+  
+             collider2D = GetComponent<Collider2D>();
+             collider2D.enabled = false;
+
+          
+
+        }
+
+
+    }
 	public void Powerup(){
 		anim.SetTrigger ("powered");
 	}
